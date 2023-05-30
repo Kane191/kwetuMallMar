@@ -2,9 +2,13 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import userRoutes from './routes/userRoutes.js';
+import cartRoutes from './routes/cartRoutes.js';
+import userAuth from './routes/auth/userAuth.js';
 import classRoutes from './routes/classRoutes.js';
-import categoryRoutes from './routes/categoryRoutes.js';
 import productRoutes from './routes/productRoutes.js';
+import categoryRoutes from './routes/categoryRoutes.js';
+import pickupPointRoutes from './routes/pickupPointRoutes.js';
 
 const app = express();
 const PORT = 5000;
@@ -18,9 +22,13 @@ mongoose.connect(mongoURI)
         .catch((err)=>console.log(err))
  
 
+app.use('/', userAuth);
+app.use('/user', userRoutes);
+app.use('/cart', cartRoutes);
 app.use('/class', classRoutes);
-app.use('/categories', categoryRoutes);
 app.use('/products', productRoutes);
+app.use('/categories', categoryRoutes);
+app.use('/pickuppoints', pickupPointRoutes);
 
 // Activity 
 // create a router with name exampleRoutes

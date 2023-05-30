@@ -11,7 +11,7 @@ const Sidenav = () => {
             <button style={styles.btn} onClick={()=>navigate('/admin/products')}>Products</button>
             <button style={styles.btn} onClick={()=>navigate('/admin/categories')}>Categories</button>
             <button style={styles.btn}>Pickup Points</button>
-            <button style={styles.btn}>Users</button>
+            <button style={styles.btn} onClick={()=>navigate('/admin/users')}>Users</button>
             <button style={styles.btn}>Admins</button>
           </div>
           <div>

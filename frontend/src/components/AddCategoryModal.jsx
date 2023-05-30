@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
 const AddCategoryModal = ({categoryData, setCategoryData, createCategory}) => {
   const [show, setShow] = useState(false);

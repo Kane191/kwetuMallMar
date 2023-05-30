@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import Form from 'react-bootstrap/Form';
 import publicApi from '../api/publicApi';
+import Modal from 'react-bootstrap/Modal';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const AddProductsModal = ({productData, setProductData, createProduct}) => {

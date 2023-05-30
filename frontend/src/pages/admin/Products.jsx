@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import Sidenav from './Sidenav';
 import Table from 'react-bootstrap/Table';
-import Container from 'react-bootstrap/Container';
 import publicApi from '../../api/publicApi';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddProductsModal from '../../components/AddProductsModal';

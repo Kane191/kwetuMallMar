@@ -20,7 +20,23 @@ router.get('/', async (req, res)=>{
             message: error.message
         });
     }
-})
+});
+
+router.get('/:id', async (req, res)=>{
+    try {
+       const id = req.params.id;
+       const product = await productModel.findOne({_id:id});
+       res.send({
+        message: 'Fetched product successfully',
+        data: product
+       });
+   } catch (error) {
+        console.log(error);
+        res.send({
+            message: error.message
+        });
+   }
+});
 
 const upload = multer({ dest: 'uploads'})
 const uploadProductImages = upload.fields([

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import EditIcon from '@mui/icons-material/Edit';
-import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import publicApi from '../api/publicApi';
+import Modal from 'react-bootstrap/Modal';
+import EditIcon from '@mui/icons-material/Edit';
 
 const EditCategoryModal = ({id, name, categoryData, setCategoryData, updateCategory}) => {
   const [show, setShow] = useState(false);
@@ -9,16 +10,18 @@ const EditCategoryModal = ({id, name, categoryData, setCategoryData, updateCateg
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-//   const getCategory = async () => {
-//     const {data} = await publicApi.get(`/categories/${id}`)
-//     console.log(data)
-//   }
+  const getCategory = async () => {
+    const {data} = await publicApi.get(`/categories/${id}`)
+      setCategoryData(data.data)
+      console.log(data)
+  }
 
   return (
     <>
       {/* <button style={styles.btn} onClick={handleShow}>Add category</button> */}
       <EditIcon onClick={()=>{
-        setCategoryData({...categoryData, name: name, id: id })
+        // setCategoryData({...categoryData, name: name, id: id })
+        getCategory()
         handleShow()
       }}/>
 
@@ -28,7 +31,7 @@ const EditCategoryModal = ({id, name, categoryData, setCategoryData, updateCateg
         </Modal.Header>
         <Modal.Body>
         <Form onSubmit={updateCategory}>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Group className="mb-3">
                 <Form.Label>Name</Form.Label>
                 <Form.Control type="text" value={categoryData.name} onChange={(e)=>setCategoryData({...categoryData, name: e.target.value})}/>
                

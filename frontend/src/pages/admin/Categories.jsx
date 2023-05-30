@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import publicApi from '../../api/publicApi';
 import Sidenav from './Sidenav';
 import Table from 'react-bootstrap/Table';
+import publicApi from '../../api/publicApi';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddCategoryModal from '../../components/AddCategoryModal';
 import EditCategoryModal from '../../components/EditCategoryModal';
