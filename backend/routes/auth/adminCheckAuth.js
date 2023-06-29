@@ -1,14 +1,12 @@
 import jwt from "jsonwebtoken";
-import userModel from "../../models/userModel.js";
+import adminModel from "../../models/adminModel.js";
 
 const checkAuth = (req, res, next) =>{
     const { authorization } = req.headers;
-    // Authorization is a variable that looks like:
-    // 'Bearer eyvcyhrfuvfyhruvbfyuvbyuhbgvyhfbvgryhgvbyfhgvbfyuh'
     if(!authorization){
         res.send({
             message: 'You must be logged in!'
-        });
+        }); 
     }
     const token = authorization.replace('Bearer ', '');
     jwt.verify(token, 'MY_SECRET_KEY', async (err, data)=>{
@@ -17,10 +15,10 @@ const checkAuth = (req, res, next) =>{
                 message: 'You must be logged in!',
                 error: err.message
             })
-        } else{
-            const { userId } = data;
-            const user = await userModel.findOne({_id: userId});
-            req.user = user;
+        } else {
+            const { adminId } = data;
+            const admin = await adminModel.findOne({_id: adminId});
+            req.admin = admin;
             next();
         }
     })

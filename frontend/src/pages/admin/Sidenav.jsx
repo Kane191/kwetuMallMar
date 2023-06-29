@@ -1,10 +1,27 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
+import NotLoggedInAlert from '../../components/NotLoggedInAlert';
 
 const Sidenav = () => {
   const navigate = useNavigate();
+  const [show, setShow] = useState(false);
+
+  const checkIfAuthenticated = () =>{
+    const token = Cookies.get('adminToken')
+    if(!token){
+      setShow(true)
+    }
+  }
+
+  useEffect(()=>{
+    checkIfAuthenticated();
+  },[]);
+
   return (
-    <div style={styles.cont}>
+    <>
+      <NotLoggedInAlert show={show} setShow={setShow} path='/admin/login'/>
+      <div style={styles.cont}>
         <h4 style={styles.heading}>KwetuMall <br/>Admin Panel</h4>
         <div style={styles.dflex}>
           <div>
@@ -12,14 +29,15 @@ const Sidenav = () => {
             <button style={styles.btn} onClick={()=>navigate('/admin/categories')}>Categories</button>
             <button style={styles.btn}>Pickup Points</button>
             <button style={styles.btn} onClick={()=>navigate('/admin/users')}>Users</button>
-            <button style={styles.btn}>Admins</button>
+            <button style={styles.btn} onClick={()=>navigate('/admin/admins')}>Admins</button>
           </div>
           <div>
-            <button style={styles.btn}>My account</button>
+            <button style={styles.btn} onClick={()=>navigate('/admin/account')}>My account</button>
             <button style={styles.btn}>Logout</button>
           </div>
         </div>
-    </div>
+      </div>
+    </>
   )
 }
 

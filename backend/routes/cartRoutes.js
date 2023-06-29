@@ -1,7 +1,8 @@
 import express from "express";
-import userModel from "../models/userModel.js";
-import productModel from "../models/productModel.js";
 import checkAuth from "./auth/checkAuth.js";
+import userModel from "../models/userModel.js";
+import salesModel from "../models/salesModel.js";
+import productModel from "../models/productModel.js";
 
 const router = express.Router();
 
@@ -54,17 +55,26 @@ router.get('/items/count', checkAuth, (req, res)=>{
 router.post('/clear', checkAuth, async (req, res)=>{
     try {
         let cart = req.body
+        const user = await userModel.findOne({_id: req.user._id});
         for(let i = 0; i < cart.length; i++){
             const product = await productModel.findOne({_id: cart[i].product._id});
             product.stock = product.stock - cart[i].quantity;
             await product.save();
+            // save sale
+            const newSale = new salesModel({
+                productId: product._id,
+                userId: user._id,
+                buyingPrice: product.buyingPrice * cart[i].quantity,
+                sellingPrice: product.price * cart[i].quantity
+            })
+            await newSale.save();
         }
-        const user = await userModel.findOne({_id: req.user._id});
+
         user.cart = [];
         const result = await user.save();
         res.send({
             message: 'Checked out successfully!',
-            data: result
+            data: result,
         });
     } catch (error) {
         res.send({

@@ -7,6 +7,7 @@ import EditUserModal from '../../components/EditUserModal';
 
 const Users = () => {
   const [users, setUsers] = useState([]);
+  const [userData, setUserData] = useState({firstName: '', lastName: '', phoneNumber: '',email: ''})
   const getUsers = async()=>{
     const {data} = await publicApi.get('/user');
     console.log(data);
@@ -21,7 +22,19 @@ const Users = () => {
         }))
     }
   }
-
+  const updateUser = async(e) =>{
+    e.preventDefault();
+    const {data} = await publicApi.post(`/user/update/${userData._id}`, userData);
+    console.log(data);
+    setUsers(users.map((user)=>{
+      if(user._id === data.data._id){
+        return data.data;
+      }else{
+        return user;
+      }
+    }));
+  }
+// 
   useEffect(()=>{
     getUsers();
   },[]);
@@ -49,7 +62,12 @@ const Users = () => {
                       <td>{user.email}</td>
                       <td>{user.phoneNumber}</td>
                       <td>
-                        <EditUserModal id={user._id}/>
+                        <EditUserModal 
+                          id={user._id}
+                          userData={userData}
+                          setUserData={setUserData}
+                          updateUser={updateUser}
+                        />
                         <DeleteIcon onClick={()=> deleteUser(user._id)}/>
                       </td>
                     </tr>

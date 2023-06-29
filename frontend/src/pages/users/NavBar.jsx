@@ -24,7 +24,7 @@ const NavBar = () => {
     <Container style={styles.nav} className="mb-3">
         <a style={styles.link} href='/'>KwetuMall</a>
         <div style={styles.icons}>
-            <AccountCircleIcon style={styles.icon}/>
+            <AccountCircleIcon style={styles.icon} onClick={()=> navigate('/account')}/>
             <ShoppingCartIcon style={styles.icon} onClick={()=> navigate('/cart')}/>
             <p style={styles.cartNo}>{count}</p>
         </div>

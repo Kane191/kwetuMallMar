@@ -4,11 +4,12 @@ import Table from 'react-bootstrap/Table';
 import publicApi from '../../api/publicApi';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddProductsModal from '../../components/AddProductsModal';
+import EditProductModal from '../../components/EditProductModal';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [productData, setProductData] = useState({
-    name: '', image: '', images: [], price: '', stock: '', description: '', category: []
+    name: '', image: '', images: [], buyingPrice: '', price: '', stock: '', description: '', category: []
   })
   const backendUrl = import.meta.env.VITE_APP_BACKEND_URL;
 
@@ -25,6 +26,7 @@ const Products = () => {
     for(let i = 0; i<productData.images.length; i++){
       formData.append('images', productData.images[i])
     }
+    formData.append('buyingPrice', productData.buyingPrice);
     formData.append('price', productData.price);
     formData.append('stock', productData.stock);
     formData.append('description', productData.description);
@@ -37,6 +39,11 @@ const Products = () => {
     if(data.message === 'Product created successfully!'){
       setProducts([...products, data.data])
     }
+  }
+  const updateProduct = async(e) =>{
+    e.preventDefault();
+    const {data} = await publicApi.post(`/products/update/${productData._id}`, productData);
+    console.log(data)
   }
 
   const deleteProduct = async (id) => {
@@ -83,7 +90,7 @@ const Products = () => {
                       <td>{product.description.substring(0, 20)}...</td>
                       <td>{product.category.map((catry)=> catry+' ')}</td>
                       <td>
-                       
+                        <EditProductModal id={product._id} productData={productData} setProductData={setProductData} updateProduct={updateProduct}/>
                         <DeleteIcon onClick={()=> deleteProduct(product._id)}/>
                       </td>
                     </tr>

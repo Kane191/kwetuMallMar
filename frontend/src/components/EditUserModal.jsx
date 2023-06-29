@@ -7,9 +7,8 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import EditIcon from '@mui/icons-material/Edit';
 
-const EditUserModal = ({id}) => {
+const EditUserModal = ({id, userData, setUserData, updateUser}) => {
     const [show, setShow] = useState(false);
-    const [userData, setUserData] = useState({firstName: '', lastName: '', phoneNumber: '',email: ''})
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -33,25 +32,29 @@ const EditUserModal = ({id}) => {
             <Modal.Title>Edit user</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form>
+            <Form onSubmit={updateUser}>
                 <Row className="mb-3">
                     <Col>
                         <Form.Label>First name</Form.Label>
-                        <Form.Control type="text" value={userData.firstName}/>
+                        <Form.Control type="text" value={userData.firstName}
+                        onChange={(e)=> setUserData({...userData, firstName: e.target.value})}/>
                     </Col>
                     <Col>
                         <Form.Label>Last name</Form.Label>
-                        <Form.Control type="text"  value={userData.lastName}/>
+                        <Form.Control type="text"  value={userData.lastName}
+                        onChange={(e)=> setUserData({...userData, lastName: e.target.value})}/>
                     </Col>
                 </Row>
                 <Row className="mb-3">
                     <Col>
                         <Form.Label>Email</Form.Label>
-                        <Form.Control type="email"  value={userData.email}/>
+                        <Form.Control type="email"  value={userData.email}
+                        onChange={(e)=> setUserData({...userData, email: e.target.value})}/>
                     </Col>
                     <Col>
                         <Form.Label>Phone number</Form.Label>
-                        <Form.Control type="text"  value={userData.phoneNumber}/>
+                        <Form.Control type="text"  value={userData.phoneNumber}
+                        onChange={(e)=> setUserData({...userData, phoneNumber: e.target.value})}/>
                     </Col>
                 </Row>
                 <button style={{...styles.btn, ...styles.submitBtn}}>Submit</button>

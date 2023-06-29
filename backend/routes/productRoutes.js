@@ -46,6 +46,7 @@ const uploadProductImages = upload.fields([
 
 router.post('/create',uploadProductImages, async (req,res)=>{
     try {
+        console.log(req.body)
         console.log(req.files)
         let image = req.files.image[0]
         let extension = (image.mimetype).split('/')[1]
@@ -66,6 +67,7 @@ router.post('/create',uploadProductImages, async (req,res)=>{
             name: req.body.name,
             image: imageNewFileName,
             images: renamedImages,
+            buyingPrice: req.body.buyingPrice,
             price: req.body.price, 
             stock: req.body.stock,
             description: req.body.description,
@@ -91,6 +93,7 @@ router.post('/update/:id', async (req, res)=>{
         const id = req.params.id;
         const product = await productModel.findOne({_id : id});
         product.name = req.body.name;
+        product.buyingPrice = req.body.buyingPrice;
         product.price = req.body.price;
         product.stock = req.body.stock;
         product.description = req.body.description;

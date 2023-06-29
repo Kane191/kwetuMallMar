@@ -11,18 +11,19 @@
 - View checkout page
 - Remove from cart on checkout page
 - Checkout
-
-- Form validation
-
-## Todo
 - Users
 - login register admin
 - Admin checkAuth
 - Admin
 - My Account - admin
 - My Account - user
+- Update product
 - Reports (admin)
 - no. of users
-- no. of sales
+- no. of sales(salesModel: productId, buyingPrice, sellingPrice)
 - total amount from sales
-- total profit(change model to have buying price and selling price)
+- total profit(change productModel to have buying price and selling price)
+
+- Form validation
+
+## Todo

@@ -1,67 +1,59 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import publicApi from '../api/publicApi';
 import Modal from 'react-bootstrap/Modal';
+import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const AddProductsModal = ({productData, setProductData, createProduct}) => {
-  const [show, setShow] = useState(false);
-  const [categories, setCategories] = useState([]);
+const EditProductModal = ({id, productData, setProductData, updateProduct}) => {
+    const [show, setShow] = useState(false);
+    const [categories, setCategories] = useState([]);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const getCategories = async () => {
-    const { data } = await publicApi.get('/categories/')
-    console.log(data)
-    setCategories(data.data)
-  }
-  const saveFiles = (e) =>{
-    let imgArr = [];
-    let images = e.target.files;
-    // console.log(images)
-    for(let i = 0; i < images.length; i++){
-        // imgArr.push(images[i])
-        imgArr = [...imgArr, images[i]];
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    const getCategories = async () => {
+        const { data } = await publicApi.get('/categories/')
+        console.log(data)
+        setCategories(data.data)
     }
-    setProductData({...productData, images: imgArr});
-  }
-  
-  useEffect(()=>{
-    getCategories()
-  },[]);
+    const getProduct = async () => {
+        const {data} = await publicApi.get(`/products/${id}`)
+        setProductData(data.data)
+        console.log(data)
+    }
+    useEffect(()=>{
+        getCategories()
+    },[]);
   return (
     <>
-    <button style={styles.btn} onClick={handleShow}>Add product</button>
+      <EditIcon onClick={()=>{
+        getProduct()
+        handleShow()
+      }}/>
 
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Add Product</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Form onSubmit={createProduct}>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Category</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <Form onSubmit={updateProduct}>
             <Row className='mb-3'>
                 <Col>
                 <Form.Label>Name</Form.Label>
                 <Form.Control type="text" value={productData.name}
                 onChange={(e)=> setProductData({...productData, name: e.target.value})}/>
                 </Col>
-                <Col>
-                <Form.Label>Image</Form.Label>
-                <Form.Control type="file" 
-                onChange={(e)=> setProductData({...productData, image: e.target.files[0]})}/>
-                </Col>
+                
             </Row>
             <Row className='mb-3'>
-                <Col>
-                <Form.Label>Images</Form.Label>
-                <Form.Control type="file" multiple
-                onChange={(e)=> saveFiles(e)}/>
-                </Col>
+               
                 <Col>
                 <Form.Label>Buying price</Form.Label>
-                <Form.Control type="number" value={productData.buyingPrice}
+                <Form.Control type="number" value={productData.buyingPrice || 0}
                 onChange={(e)=> setProductData({...productData, buyingPrice: e.target.value})}/>
                 </Col>
             </Row>
@@ -78,7 +70,7 @@ const AddProductsModal = ({productData, setProductData, createProduct}) => {
                 </Col>
                 <Col>
                 <Form.Label>Category</Form.Label>
-                <Form.Select aria-label="Default select example"
+                <Form.Select aria-label="Default select example" value={productData.category[0]}
                 onChange={(e)=> setProductData({...productData, category: [...productData.category, e.target.value]})}>
                     <option></option>
                     {
@@ -110,12 +102,11 @@ const AddProductsModal = ({productData, setProductData, createProduct}) => {
             </Form.Group>
             <button style={{...styles.btn, ...styles.submitBtn}}>Submit</button>
         </Form>          
-      </Modal.Body>
-    </Modal>
-  </>
+        </Modal.Body>
+      </Modal>
+    </>
   )
 }
-
 const styles = {
     submitBtn: {
         width: '100%'
@@ -128,13 +119,6 @@ const styles = {
         width: '200px',
         borderRadius: '10px',
         margin: '10px 0'
-    },
-    flex: {
-        display: 'flex'
-    },
-    cursor: {
-        cursor: 'pointer',
     }
 }
-
-export default AddProductsModal
+export default EditProductModal
